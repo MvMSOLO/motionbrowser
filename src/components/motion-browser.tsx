@@ -167,6 +167,9 @@ export function MotionBrowser() {
     setSearching(false);
     cursorRef.current = next;
     setCursor(next);
+    const entry = stack[next];
+    setQuery(entry?.t === "web" ? entry.url : entry?.t === "search" ? entry.query : "");
+    setFrameState(entry?.t === "web" && entry.plan.kind !== "restricted" ? "loading" : "idle");
     playCue(delta < 0 ? "back" : "confirm");
   }, [playCue, stack.length]);
 
