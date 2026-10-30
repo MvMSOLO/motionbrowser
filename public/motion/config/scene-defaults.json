@@ -1,0 +1,107 @@
+{
+  "camera": {
+    "position": [
+      0,
+      1.38,
+      4.15
+    ],
+    "lookAt": [
+      0,
+      1.12,
+      0
+    ],
+    "fovPortrait": 40,
+    "fovLandscape": 34
+  },
+  "fog": {
+    "color": "#070A12",
+    "density": 0.055
+  },
+  "exposure": 1.04,
+  "placements": {
+    "portalRing": {
+      "position": [
+        0,
+        1.18,
+        0
+      ],
+      "rotation": [
+        1.5707963267948966,
+        0,
+        0
+      ]
+    },
+    "portalFrame": {
+      "position": [
+        0,
+        1.16,
+        0.08
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "portalCore": {
+      "position": [
+        0,
+        1.16,
+        -0.05
+      ],
+      "rotation": [
+        1.5707963267948966,
+        0,
+        0
+      ]
+    },
+    "browserFrame": {
+      "position": [
+        0,
+        1.16,
+        0.16
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "orb": {
+      "position": [
+        0,
+        0.28,
+        1.85
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "compass": {
+      "position": [
+        0.42,
+        0.28,
+        1.85
+      ],
+      "rotation": [
+        1.5707963267948966,
+        0,
+        0
+      ]
+    },
+    "marker": {
+      "position": [
+        0,
+        1.18,
+        0.55
+      ],
+      "rotation": [
+        1.5707963267948966,
+        0,
+        0
+      ]
+    }
+  }
+}

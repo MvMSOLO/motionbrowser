@@ -1,0 +1,86 @@
+export type LabCard = { id: string; title: string; body: string; comments: string[] };
+
+export const LAB_CARDS: LabCard[] = [
+  {
+    id: "neutral",
+    title: "Neytralni ushlab turing",
+    body: "Harakat bir marta ishlaydi. Telefon egilgan holda qolsa, keyingi kartochka o‘zi ochilmaydi. Avval neytralga qayting.",
+    comments: [
+      "Bu birinchi izoh. Pastga qarab o‘qish uchun yuqoriga eging.",
+      "Ikkinchi izoh: pastga egish izohlarni teskari siljitadi.",
+      "Uchinchi izoh Motion Lab demo ichida yozilgan. Bu Instagram emas.",
+      "To‘rtinchi izoh: o‘ngga egish paneli yopadi.",
+      "Beshinchi izoh sensor o‘rniga simulyator ham shu quvurni ishlatadi.",
+      "Oltinchi izoh: yozayotganda harakat to‘xtaydi.",
+      "Yettinchi izoh: sozlamalar ochiq bo‘lsa ham to‘xtaydi.",
+      "Sakkizinchi izoh: ilova orqa fonda bo‘lsa sensor o‘qilmaydi.",
+      "To‘qqizinchi izoh: teginish tugmalari har doim ishlaydi.",
+      "O‘ninchi izoh: bu matn birinchi tomon demo kontenti.",
+    ],
+  },
+  {
+    id: "up",
+    title: "Yuqoriga — keyingi kartochka",
+    body: "Telefonning yuqorisini o‘zingizdan nari egishingiz bitta keyingi yozuvni ochadi. Usiz ushlab turish takrorlamaydi.",
+    comments: [
+      "Kalibrlash hozirgi qulay holatni nol deb oladi.",
+      "Sezuvchanlik past bo‘lsa, egish kattaroq bo‘lishi kerak.",
+      "O‘rta sezuvchanlik odatiy tanlov.",
+      "Yuqori sezuvchanlik kichikroq egishni qabul qiladi.",
+      "Diagonal egish e’tiborsiz qoldiriladi.",
+      "Shovqin past amplitudada harakat chiqarmaydi.",
+      "Ekran burilsa, qayta kalibrlash kerak.",
+      "Bu izohlar ro‘yxati haqiqiy sayt DOM’i emas.",
+    ],
+  },
+  {
+    id: "down",
+    title: "Pastga — oldingi kartochka",
+    body: "Pastga egish ro‘yxatda aynan bitta qadam orqaga qaytaradi. Chegarada turib qoladi, aylanib ketmaydi.",
+    comments: [
+      "Birinchi kartochkada orqaga qaytish indeksni nolga qotiradi.",
+      "Izohlar yopiq bo‘lgandagina lenta harakatlanadi.",
+      "Izohlar ochiq bo‘lsa, yuqori va past aylantirishga aylanadi.",
+      "Chapga egish izohlarni ochadi.",
+      "O‘ngga egish yopadi yoki izohlar yopiq bo‘lsa hech narsa qilmaydi.",
+      "Bu xatti-harakat birinchi tomon kodda tekshirilgan.",
+    ],
+  },
+  {
+    id: "frame",
+    title: "Freym va haqiqiy sayt",
+    body: "Manzil satriga example.com yozing. U haqiqiy sahifa. Instagram va YouTube esa bu yerda ochilmaydi — ular tashqariga uzatiladi.",
+    comments: [
+      "PWA begona sayt ichiga ishonchli tegish yubora olmaydi.",
+      "Shuning uchun harakat faqat shu demoda ishlaydi.",
+      "X-Frame-Options chetlab o‘tilmaydi.",
+      "Server orqali sayt nusxasi ham olinmaydi.",
+      "Tashqarida ochish oddiy yangi oyna.",
+      "Parol va forma bu ilovada saqlanmaydi.",
+    ],
+  },
+  {
+    id: "touch",
+    title: "Teginish har doim qoladi",
+    body: "Sensor yo‘q, ruxsat berilmadi yoki harakat o‘chiq bo‘lsa ham pastdagi tugmalar kartochka va izohlarni boshqaradi.",
+    comments: [
+      "Klaviatura ochiq paytda sensor jim turadi.",
+      "2D rejimda ham shu tugmalar ishlaydi.",
+      "Ovoz va tebranish ixtiyoriy.",
+      "Kam harakat kamera siljishini o‘chiradi.",
+      "Grafika past rejimda soddaroq model ishlatiladi.",
+    ],
+  },
+  {
+    id: "limit",
+    title: "Bu Android ilova emas",
+    body: "Hozirgi narsa veb prototip. Haqiqiy telefon WebView, sensor va o‘rnatiladigan paket alohida bosqich. Bu ekran APK emas.",
+    comments: [
+      "WebView ham har saytni bir xil ochavermaydi.",
+      "Google kirishi ko‘pincha tashqi brauzerni talab qiladi.",
+      "Begona sahifaga keng native ko‘prik berilmaydi.",
+      "Jismoniy sensor sinovi shu kompyuterda o‘tkazilmagan bo‘lishi mumkin.",
+      "Simulyator yozuvi haqiqiy telefon o‘rnini bosmaydi.",
+    ],
+  },
+];

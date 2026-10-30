@@ -1,0 +1,7 @@
+{
+  "name": "error_transition",
+  "durationMs": 180,
+  "reducedMs": 100,
+  "easing": "linear",
+  "property": "opacity"
+}

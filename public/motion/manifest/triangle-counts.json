@@ -1,0 +1,15 @@
+{
+  "environment/motion_observatory.glb": 30096,
+  "environment/environment_low.glb": 3520,
+  "models/portal/portal_frame.glb": 48,
+  "models/portal/portal_ring.glb": 9216,
+  "models/portal/portal_core.glb": 48,
+  "models/browser/browser_frame.glb": 48,
+  "models/browser/browser_corner_detail.glb": 48,
+  "models/browser/browser_side_rail.glb": 24,
+  "models/controls/gesture_orb.glb": 768,
+  "models/controls/orientation_compass.glb": 652,
+  "models/controls/calibration_marker.glb": 792,
+  "models/effects/transition_shards.glb": 96,
+  "models/effects/soft_light_rig.glb": 768
+}

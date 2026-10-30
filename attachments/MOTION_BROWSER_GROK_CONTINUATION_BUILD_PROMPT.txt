@@ -1,0 +1,530 @@
+MOTION BROWSER — CONTINUATION / IMPLEMENTATION MASTER PROMPT
+Version 2.0 — Self-contained brief for a NEW Grok coding chat
+
+IMPORTANT: This prompt is the complete product context. The previous Grok conversation is unavailable. Do not assume you remember anything. Read this document carefully, inspect the attached grok-workspace.zip, then continue the existing project rather than starting a disconnected demo.
+
+============================================================
+1. YOUR ROLE AND THE REQUIRED OUTCOME
+============================================================
+
+You are the lead product engineer, 3D/web graphics engineer, interaction engineer, QA engineer, and technical reviewer for MOTION BROWSER.
+
+Your job is not to produce another concept description, a static mockup, or a list of recommendations. Your job is to inspect the supplied project, preserve working work, implement all feasible missing features, repair defects, run the application, test it in a real browser preview, and provide evidence of what actually works.
+
+Work directly in the current Grok workspace. The user is not a command-line developer and expects you to make the changes in the project yourself. Do not ask the user to run terminal commands, inspect code, or do manual QA. Do not stop after planning. Make reasonable engineering decisions and execute the work in this run.
+
+The user wants a polished, genuinely useful product that feels different from an ordinary browser. Be ambitious about design and implementation, but brutally honest about technical limitations. Never fake a feature, build result, benchmark, screenshot, login, website, sensor reading, or completed task.
+
+The user speaks Uzbek. Keep user-facing explanations and the final report in Uzbek. Source code, comments, identifiers, test names, and this technical implementation can remain in English.
+
+============================================================
+2. PRODUCT CONTEXT — WHAT MOTION BROWSER IS SUPPOSED TO BE
+============================================================
+
+MOTION BROWSER is a mobile-first spatial browser concept. The user opens the app and sees a premium, immersive 3D digital environment. The environment is already loaded locally so the user does not wait for the scene after every action.
+
+A minimal address/search field appears in the 3D environment. The user can type a website name or URL, for example:
+- Instagram
+- Instagram.com
+- YouTube
+- YouTube.com
+- another normal website/domain
+
+The intended experience is to show the REAL website — not an imitation, screenshot, mock feed, or clone — inside a floating browser panel that appears to belong to the 3D environment. Real page content, navigation, and login must remain the real website's own content and functionality wherever the platform permits it.
+
+The central differentiator is optional physical phone-motion control. The intended primary mapping is:
+- gently tilt phone upward: next feed item / next Reel, when the active destination supports it;
+- tilt downward: previous feed item, when supported;
+- tilt left: open the comments/context panel, when supported;
+- tilt right: close the comments/context panel / return;
+- while comments are open, tilt up/down: scroll comments;
+- return to neutral between distinct gestures.
+
+The user must always retain normal touch controls. Motion control is optional, can be disabled instantly, and must not trigger while the user is typing, using an overlay, or when the app is backgrounded.
+
+The intended final product is a NATIVE ANDROID APP using Android WebView and device sensors, with a 3D scene surrounding the real website surface. The product itself must NOT depend on AI APIs, cloud AI, API keys, paid AI models, or runtime AI calls. No AI feature is part of the shipped product.
+
+============================================================
+3. CRITICAL PLATFORM REALITY — DO NOT MISREPRESENT THE CURRENT ZIP
+============================================================
+
+The supplied ZIP is NOT a native Android application. It is a Grok Build web workspace using a Vite / React / TanStack Start style project with Three.js assets and web-oriented helper modules.
+
+The ZIP contains no AndroidManifest.xml, no Kotlin/Java app source, no Gradle wrapper, and no Android APK/AAB. It also does not contain a working Android WebView implementation.
+
+The current Grok workspace contract (AGENTS.md) is for a web app that runs in a Vercel-oriented preview. Follow the workspace's AGENTS.md and platform constraints. Do not claim this web workspace is a native Android app. Do not report an APK as built unless an actual installable APK was produced by a real Android build and can be verified.
+
+Therefore, your immediate implementation target in THIS workspace is:
+A polished, working WEB/PWA PROTOTYPE of the spatial browser shell and motion interaction, with real third-party pages embedded only when the destination permits embedding, an honest external-browser fallback for restricted sites, and a clear native-Android migration boundary.
+
+This is a prototype milestone, not the final native product. Keep the intended Android product architecture documented. Do not silently downgrade the final vision or pretend that PWA limitations are solved.
+
+Important browser security limitations:
+- A normal web app cannot freely embed every website. X-Frame-Options and Content-Security-Policy frame-ancestors can block an iframe. Instagram, YouTube, TikTok, Facebook, and authentication pages commonly restrict embedding or behave differently in embedded browsers.
+- A cross-origin iframe is isolated. The parent PWA cannot read its DOM or dispatch arbitrary trusted touch interactions into it. A JavaScript synthetic swipe in the parent page does NOT become a real user swipe inside an arbitrary third-party iframe.
+- Therefore, the PWA can demonstrate gestures against its own first-party Motion Lab / demo feed and its own UI. It must NOT claim it can control Instagram Reels, YouTube Shorts, comments, or arbitrary cross-origin websites from an iframe.
+- For restricted websites, show a clear explanation and a working “Open in browser” / external handoff. Never bypass X-Frame-Options or CSP, proxy arbitrary websites to strip their security headers, clone the site, scrape credentials, or fake a working login.
+- The future native Android version can directly load the website in an Android WebView rather than an iframe. That is a different platform integration and must be implemented/tested separately. Even Android WebView has compatibility and OAuth restrictions; do not guarantee every site works.
+
+============================================================
+4. CURRENT PROJECT AUDIT — TREAT THIS AS THE STARTING BASELINE
+============================================================
+
+The attached ZIP was inspected. It contains 400 archive entries, including the project framework, asset generator, source helpers, and an extensive asset pack.
+
+4.1 Existing work that is genuinely present
+
+A. Motion / browser helper modules exist under src/motion/:
+- embed-policy.ts
+- embed.functions.ts
+- gesture-recognizer.ts
+- motion-actions.ts
+- motion.test.ts
+- observatory.ts
+- orientation-math.ts
+- search-parse.ts
+- search.functions.ts
+- site-profiles.ts
+- swipe-sequence.ts
+- url-resolver.ts
+
+These contain useful isolated logic for address resolution, embed-policy checks, gesture recognition, screen-relative orientation math, gesture-to-action mapping, swipe-sequence calculations, and DuckDuckGo result parsing.
+
+B. A locally generated asset pack exists under public/motion/:
+- 13 GLB files: main environment, low environment, portal, browser-frame components, gesture/orientation controls, and decorative effects;
+- 12 PNG textures / preview images;
+- 51 SVG files for icons, brand, and browser states;
+- 8 GLSL shader files;
+- 7 WAV sound files;
+- 9 animation JSON files;
+- 4 Lottie JSON files;
+- Outfit variable font files, with an OFL license note;
+- configuration, performance profiles, haptic patterns, manifest, and license report.
+
+C. Asset integrity review:
+- 117 asset manifest entries were checked;
+- all 117 referenced files exist;
+- no referenced asset is empty;
+- every declared byte size matches the actual file;
+- every available SHA-256 integrity value matches;
+- all JSON files parse;
+- all 13 GLB files parse as glTF 2.0 scenes;
+- the manifest pack totals approximately 2.6 MB.
+
+D. Current geometry budgets recorded by the generator:
+- main environment: 30,096 triangles;
+- low environment: 3,520 triangles;
+- remaining models are intentionally simple procedural geometry.
+
+E. Source / licensing:
+- scripts/generate-motion-assets.mjs procedurally creates the original GLB, PNG, SVG, shader, sound, and animation assets;
+- Outfit is recorded under SIL Open Font License 1.1;
+- public/motion/manifest/ASSET_LICENSES.md describes asset origins.
+
+F. Isolated motion tests:
+- node --experimental-strip-types --test src/motion/motion.test.ts passed 13/13 tests in the supplied snapshot.
+
+These are useful foundations. Preserve them and improve them. Do not throw them away and regenerate an unrelated design.
+
+4.2 Important work that is NOT present / NOT integrated
+
+The following are missing from the supplied snapshot:
+- startup.sh;
+- src/router.tsx;
+- src/routes/__root.tsx;
+- src/routes/index.tsx;
+- src/styles.css;
+- a complete application entry / first-launch user interface;
+- the actual address bar UI and functional navigation chrome;
+- a live browser panel / iframe implementation;
+- a website compatibility/fallback experience;
+- an actual DeviceOrientationEvent / sensor event listener;
+- sensor permission handling and live calibration UI;
+- a complete integration that connects sensor events to stepRecognizer, actionForGesture, and actual supported page actions;
+- a real gesture-controlled first-party Motion Lab user experience;
+- a working connection from the UI to mountObservatory();
+- complete animation playback / application integration for the animation assets;
+- integrated sound and haptics controls;
+- a native Android project or APK/AAB.
+
+A search of the uploaded TypeScript source found mountObservatory() only as a function definition, no app call site. It found no DeviceOrientationEvent listener or deviceorientation event handler. It found actionForGesture() used by its tests but not by an application component. The helper modules therefore must not be described as an already integrated browser.
+
+4.3 Known source defects / risks to address
+
+1. src/motion/observatory.ts references pulseStart in the animation loop and in pulse(), but the supplied file does not declare or initialize pulseStart. Declare and initialize it correctly (for example, -1) or remove the incomplete code. Add a regression check and run TypeScript.
+
+2. The placement defaults are inconsistent. observatory.ts has fallback placements, but public/motion/config/scene-defaults.json is merged over them and overrides several values. Inspect the portalCore transform carefully. The generated portal_core.glb is a disc in its local XZ plane; the current config has a zero rotation, which may leave the core horizontal rather than aligned vertically with the portal/browser opening. Fix the geometry or transform so it sits in the intended vertical opening. Do not guess: visually verify it in the actual running Three.js scene.
+
+3. resolveAddress() currently clears url.hash. Preserve URL fragments unless there is a tested reason not to; hash fragments are meaningful for SPA routing and anchor links. Add a regression test.
+
+4. embed.functions.ts performs a server-side fetch to a user-supplied hostname and allows automatic redirects. It validates the first hostname but does not revalidate every redirect destination and its resolved addresses. This is an SSRF risk if exposed. Prefer removing the server-side probe if it is unnecessary. If retained, implement safe manual redirect handling with a strict redirect limit and revalidate protocol, hostname, DNS results, and private/reserved IP ranges at every hop. Fail closed. Never use it as an arbitrary page proxy.
+
+5. isBlockedHost() is incomplete for all special-use / private address ranges and IPv6 representations. Harden it with a well-tested parser/library or a carefully tested implementation. Add tests for IPv4-mapped IPv6, IPv6 loopback, unique-local, link-local, multicast, unspecified, carrier-grade NAT, and reserved ranges. Avoid false confidence from a few regex checks.
+
+6. Browser security policy should distinguish a known blocked site from a site whose support is unknown. A successful HTTP header probe does not guarantee that a site will work inside an iframe. Do not show “supported” unless actual browser behavior has been tested.
+
+7. site-profiles.ts explicitly marks Instagram and YouTube as experimental with feed=false and comments=false, with a note that no gestures are sent into those sites. This is an honest current limitation. Keep that honesty. In the PWA prototype, these profiles must remain unsupported for in-frame gesture control unless genuine support is demonstrated without bypassing security boundaries.
+
+8. animations/*.json are primarily tiny timing/property descriptors; they are not automatically playing animations. Lottie files are basic simple shapes. Integrate the existing files or replace/refine them with working animations; do not say animations are complete merely because JSON files exist.
+
+9. audio files are short generated synthetic tones and one simple ambience loop. They are present but not known to be connected to UI events. Add optional controls and actual event integration. Default ambience off or very quiet; respect reduced-motion, mute, and system preferences.
+
+10. public/motion/environment/environment_preview.png is a generated abstract 2D preview graphic, not a screenshot of the final running 3D application. Do not present it as an actual app render.
+
+4.4 Test results recorded during audit
+
+Full command: npm run test
+- 197 tests total;
+- 189 passed;
+- 8 failed.
+
+All 8 observed failures are in scripts/grok-pwa-plugin.test.mjs and concern Open Graph / app title metadata behavior. Failure names include:
+- platform chrome overwrites share-card metas and always sets og:title;
+- published grok.me slug is still a title fallback;
+- emits og:image for a public host and prefers a custom card;
+- placeholder og:image appends site.color when it is 6-digit hex;
+- document title entities are not double-escaped on og:title;
+- injects into documents with no head element;
+- streaming injector matches </HEAD> case-insensitively;
+- uses the app name in the injected title tag.
+
+The actual output showed src/lib/og/site.json provides a fixed title “MOTION BROWSER”, which appears to override title fallback behavior expected by those tests. Investigate the intended platform contract. Fix the app metadata / integration correctly without weakening, deleting, or rewriting tests merely to make them green. Do not damage Grok platform chrome, server middleware, scripts/grok-pwa-* files, or public/__grok/.
+
+Build/typecheck observation from the independent ZIP review environment:
+- npm run build could not start because the local dependency installation was incomplete and the vite executable was missing;
+- npm run typecheck could not find vite/client and node type definitions for the same incomplete-install reason;
+- npm ci was attempted but could not complete because npm registry requests returned EAI_AGAIN in that review environment.
+These observations are not proof that the current Grok workspace has the same dependency problem. AGENTS.md says dependencies are preinstalled in the actual Grok workspace. Test there using the installed environment and do not waste the user's time with unnecessary npm ci.
+
+============================================================
+5. REQUIRED FIRST ACTIONS — AUDIT THE ACTIVE WORKSPACE BEFORE EDITING
+============================================================
+
+Before coding:
+1. Read the full AGENTS.md. It is the binding contract for the Grok workspace.
+2. Read .grok/references/scaffold.md and follow the exact route/scaffold contract.
+3. Read relevant design / 3D skill docs already in .grok/skills/, especially design-ui, building-games, and threejs, including any linked references needed for this type of product.
+4. Inspect attachments/MOTION_BROWSER_GROK_MASTER_PROMPT.txt and attachments/MOTION_BROWSER_ASSETS_MASTER_SPEC.txt if they are present. They contain the original product and asset requirements, but this continuation prompt already includes the essential product context.
+5. Inspect the actual current workspace rather than assuming the ZIP and active workspace are identical. Compare important files. Preserve later or newer changes if any exist.
+6. Check the installed dependencies and available browser/test tools. Use package.json and the existing dependencies before installing replacements.
+7. Create a short internal implementation checklist, then immediately proceed to implementation. Do not return only the checklist.
+
+Preserve the platform files and framework. In particular, respect AGENTS.md rules about src/router.tsx, src/routes/__root.tsx, src/routes/index.tsx, src/styles.css, startup.sh, the required dev server, and the production preview. Do not delete or overwrite public/__grok/, server/, scripts/grok-pwa-*, prewired src/lib helpers, vite.config.ts, or tsconfig.json unless the platform contract explicitly permits a minimal compatible edit.
+
+============================================================
+6. BUILD THE ACTUAL WEB/PWA PROTOTYPE — REQUIRED IMPLEMENTATION
+============================================================
+
+PHASE A — Restore the running application shell
+
+A1. Create the missing app entry files using the exact patterns in .grok/references/scaffold.md:
+- src/router.tsx;
+- src/routes/__root.tsx;
+- src/routes/index.tsx;
+- src/styles.css;
+- /workspace/startup.sh (the exact path required by AGENTS.md).
+
+A2. Keep the existing framework and project structure. Do not scaffold a second Vite app or replace TanStack Start with a different framework.
+
+A3. Make the app render a real screen immediately. The first visual state must include the MOTION BROWSER identity, the environment canvas or a clean 2D fallback, and functional UI controls.
+
+A4. The experience must be mobile-first, especially around 390x844. Also handle desktop preview and landscape. Respect safe areas, touch target sizes, and text scaling.
+
+A5. The live preview must run on the platform's required address/port and remain running according to AGENTS.md. Never start Vite directly; use the prescribed npm scripts and startup.sh contract.
+
+PHASE B — Integrate the existing 3D observatory
+
+B1. Use Three.js and the existing GLB files under public/motion/. Do not replace the environment with a static screenshot or a generic CSS gradient alone.
+
+B2. Mount mountObservatory() from a real React component with proper lifecycle handling:
+- create renderer once per mounted canvas;
+- show a stable loading state;
+- handle asynchronous initialization and failures;
+- prevent stale async setup after unmount;
+- dispose the renderer, geometry, materials, textures, and animation resources correctly;
+- respond to resize and orientation changes;
+- avoid duplicate canvas mounts and memory leaks.
+
+B3. Repair the pulseStart bug and every runtime/type issue found while integrating.
+
+B4. Correct the portal geometry/placements and visually verify the actual render. The browser panel must align with the portal and provide a clear safe rectangle for the real embedded page surface. Do not allow the floor or portal disc to obscure the browser panel.
+
+B5. Improve the scene from procedural blockout quality toward a carefully composed premium product environment. Existing geometry is a useful base, but it is currently simple: a flat disc floor, a few large rings/arches, a rectangular frame, and small decorative items. Improve hierarchy, depth, lighting, surface quality, material response, and spatial composition without adding needless geometry or excessive particles.
+
+B6. Use existing texture and shader assets where useful. Validate all shader compilation on the actual preview browser. Every shader needs a safe material fallback. If WebGL fails, the user must still be able to browse via the 2D shell.
+
+B7. Camera composition should feel stable and intentional on tall portrait phones. Avoid an exaggerated camera angle, floor occlusion, excessive parallax, rapid camera movement, heavy bloom, or motion-sickness effects.
+
+B8. Reduced Motion must materially reduce camera parallax and animated effects, not merely change one variable.
+
+B9. Add an asset validation script/test if it does not already exist. It must check manifest paths, non-empty files, declared sizes, hashes, duplicate ids, and license references. Do not regenerate the whole asset folder unless the generator and results are checked.
+
+PHASE C — Build a real browser shell and address bar
+
+C1. Build a polished but minimal address/search field that looks integrated into the 3D space. Include a real input, clear, submit, URL loading state, and accessible focus behavior.
+
+C2. Keep the keyboard native to the user's platform/browser. Do not build a fake keyboard unless there is a specific tested product reason. When typing, sensor gestures must be paused.
+
+C3. Use the existing resolveAddress() logic, fix defects, and connect it to the UI. Required behavior:
+- “Instagram” resolves to https://www.instagram.com/;
+- “YouTube” resolves to https://www.youtube.com/;
+- a URL/domain is normalized correctly;
+- a phrase becomes a search query;
+- unsafe schemes such as javascript:, file:, data:, intent:, and content: are rejected;
+- userinfo credentials in URLs are rejected;
+- preserve valid path, query, and hash fragments;
+- only use HTTPS in the embedded prototype unless a carefully documented policy says otherwise.
+
+C4. Implement functional back, forward, reload, home/space return, close, and external-open controls. No decorative buttons that do nothing. Disable controls when the action is unavailable.
+
+C5. Keep a simple session navigation history for the prototype where the browser API allows it. Do not capture, store, or log the user's third-party credentials or form contents.
+
+C6. Use a real iframe for the website when embedding is permitted. Never render screenshots in place of the page. Maintain real scrolling, pointer input, forms, and videos as far as the browser allows.
+
+C7. When the user enters a known restricted site (especially Instagram, YouTube, TikTok, Facebook, X/Twitter, or an authentication URL), explain that the site may block embedded use and offer a one-tap external open action. Do not display a fake loaded state.
+
+C8. For unknown sites, state “Embedding compatibility unknown” until a real test proves otherwise. Do not equate an HTTP 200 with iframe compatibility. Handle blocked/blank/timeout states honestly and provide an external fallback.
+
+C9. Test at least one genuinely embeddable ordinary website and at least one restricted website. Record the actual outcome. Do not make unsupported claims about Instagram/YouTube compatibility.
+
+C10. Important product design: the live website is the dominant content. The 3D frame should support it rather than hide it. Keep the browser content readable and usable, with the frame outside the actual interactive viewport wherever possible.
+
+PHASE D — Implement actual sensor input and gesture interaction
+
+D1. The current code only includes pure functions. Add a real browser sensor adapter and lifecycle hook/service. Use DeviceOrientationEvent when supported, with correct permission behavior and secure-context checks. Handle browsers that expose permission request APIs and browsers that do not.
+
+D2. Capture a neutral reference orientation during explicit user calibration. Do not assume the phone's natural orientation is identical across devices.
+
+D3. Use screen-relative orientation mapping. Use the existing orientation-math.ts as a starting point, but validate portrait, landscape, and screen rotation signs on a real phone if available. Recalibrate or remap on screen-orientation change.
+
+D4. Filter sensor noise with a stable low-pass filter or equivalent. Use distinct activation and reset thresholds, a hold interval, re-arm-to-neutral behavior, and cooldown. Avoid repeated actions while the phone remains tilted.
+
+D5. Use the existing configForSensitivity() and stepRecognizer() as foundations. Make low / medium / high sensitivity a real working setting. Default to a conservative comfortable sensitivity. Do not encourage sudden or uncomfortable movement.
+
+D6. Handle every inactive context:
+- address input focused or keyboard visible;
+- calibration modal or settings overlay open;
+- app document hidden/backgrounded;
+- gesture switch disabled;
+- sensor permission denied;
+- sensor unavailable;
+- WebGL unavailable;
+- external browser handoff active.
+In all these contexts do not trigger navigation actions.
+
+D7. Connect the recognized gesture through actionForGesture() to a real first-party Motion Lab feed and comments panel. Implement a visible test feed with multiple distinct cards/items and a comments drawer/panel that genuinely scrolls. This is a demonstration fixture, not a clone of Instagram or YouTube; label it “Motion Lab demo”.
+
+D8. In the PWA prototype, do not pretend the gesture events control a cross-origin website iframe. For external iframe content, keep browser touch controls available and clearly indicate that motion-to-page interaction is not supported by the PWA security model. The final Android WebView/native input bridge is a separate milestone.
+
+D9. The Motion Lab must prove:
+- tilt up advances exactly one item;
+- tilt down returns exactly one item;
+- tilt left opens the demo comments panel;
+- tilt right closes the panel;
+- up/down while comments are open scrolls that panel;
+- a held tilt does not repeat;
+- gesture must return near neutral before firing again;
+- no gesture fires while typing, while disabled, or in background.
+
+D10. Build an internal sensor simulator for desktop preview / automated tests. It may feed synthetic sensor samples into the same recognizer pipeline, but it must be clearly labeled as a simulator and must never be reported as a real phone test. It should let QA test thresholds and mappings without hardware.
+
+D11. Add a concise onboarding/tutorial panel showing the four directions visually. Include calibrate, pause/disable, sensitivity, and reset calibration. Include a touch-only mode.
+
+D12. If the browser exposes sensor permission in a way that requires a user gesture, request it only in response to the user's explicit tap on “Enable motion”. Explain why the permission is needed. Never attempt to hide or bypass the permission flow.
+
+PHASE E — Finish interaction feedback, accessibility, and sounds
+
+E1. Integrate the existing animation JSON/Lottie assets or replace them with simple, genuinely running UI animation timelines. Keep animations interruptible and short.
+
+E2. Use the existing WAVs as restrained optional feedback sounds. Sound should be off or subtle by default. Ensure there is a working mute control. Never use copyrighted music or copied operating-system sounds.
+
+E3. Use native vibration/haptics APIs only when available, with user control and a haptics-off setting. No continuous vibration during tilt.
+
+E4. Support prefers-reduced-motion, high-contrast/focus states, semantic labels, keyboard accessibility, and useful screen-reader names for native controls.
+
+E5. Keep all essential navigation available with touch and keyboard even if motion sensing or 3D rendering fails.
+
+E6. Persist only low-risk UI preferences locally (for example, sensitivity, reduced motion, sound, and haptics). Do not persist website credentials, form content, or third-party account data.
+
+PHASE F — Visual finish and performance
+
+F1. Deliver a distinct premium visual identity consistent with the supplied asset specification: dark observatory, precise metallic framing, soft cyan/blue accents, restrained glass, clear hierarchy, elegant typography, and purposeful motion.
+
+F2. Avoid generic dashboard cards, stock-template layouts, fake HUD readouts, random neon particles, gratuitous glow, crowded controls, and childish UI.
+
+F3. The browser panel must have sufficient actual viewport space at 390x844 and larger phone sizes. Do not let 3D decoration reduce the page to an unusable narrow strip.
+
+F4. Provide high / balanced / low profiles. Reduce decorative effects, particle count, render scale, and texture quality before compromising the browser viewport or touch responsiveness.
+
+F5. The first scene and all core chrome assets must load locally. Do not depend on a CDN for Three.js, shaders, fonts, or core UI assets.
+
+F6. Avoid continuous CPU/GPU work when the document is hidden. Stop or pause the render loop properly, then resume safely.
+
+F7. Dispose GPU resources and event listeners. Avoid duplicate listeners, repeated WebGL contexts, and stale asynchronous loads.
+
+F8. Measure performance in the browser preview. Do not promise 90/120 FPS across all devices. A stable 60 FPS is a target, not a guarantee until actually measured. Record browser, device/emulation, viewport, and observed performance.
+
+============================================================
+7. NATIVE ANDROID MIGRATION — KEEP THE REAL PRODUCT DESTINATION CLEAR
+============================================================
+
+The final intended product is Android-native. Do not claim this PWA is the final Android build.
+
+After the web prototype is working, create a concise, technically accurate NATIVE_ANDROID_IMPLEMENTATION.md document explaining how to port the proven design into an actual Android app:
+
+- Kotlin Android application;
+- Android WebView directly loading real website URLs (not an iframe);
+- WebView navigation delegate and safe URL handling;
+- correct Android WebView settings without exposing an unsafe JavaScript bridge to arbitrary third-party pages;
+- native SensorManager / rotation vector or device orientation integration;
+- robust calibration, screen-orientation mapping, low-pass filtering, hysteresis, neutral re-arm, and cooldown;
+- native MotionEvent / WebView input feasibility tests before promising that gestures control third-party sites;
+- 3D shell strategy (local Three.js/WebGL layer or a native graphics engine) and careful composition with a real WebView layer;
+- Android keyboard and Back-button handling;
+- external Custom Tabs / browser handoff for sign-in flows that cannot work in embedded WebView;
+- Google OAuth / identity restrictions and website-specific WebView incompatibility;
+- APK/AAB build, signing, privacy, permissions, and device QA requirements.
+
+Important: do not expose a JavaScript bridge with powerful native methods to arbitrary websites. If a bridge is used, isolate it to app-owned content in a separate WebView/origin and use narrowly scoped message validation. Never give a third-party page arbitrary native capabilities.
+
+Do not create a fake android/ folder with placeholder Gradle files or claim Android build success. Only add a real Android module if the environment genuinely supports it and the files compile. If this Grok Build environment cannot build native Android, document that truthfully and keep the current deliverable labelled PWA prototype.
+
+============================================================
+8. SECURITY AND RELIABILITY REQUIREMENTS
+============================================================
+
+- Never bypass website frame protections.
+- Never use a server-side arbitrary URL proxy as a workaround for iframe restrictions.
+- Protect server functions from SSRF, redirects to private networks, DNS rebinding, oversized responses, and long-running fetches.
+- Do not store website passwords, auth cookies, or third-party form data in app storage.
+- Do not display fake TLS/secure badges. Only show a security indicator when grounded in a real browser/URL state and label it carefully.
+- Reject dangerous URL schemes and malformed destinations.
+- Preserve safe URLs and hash fragments.
+- Do not allow arbitrary popups without a clear user action.
+- Ensure external links use safe opening behavior.
+- Never collect sensor data when the feature is disabled or the app is not active. Process sensor readings locally and do not transmit them to a server.
+- Do not request microphone, camera, contacts, location, or unrelated permissions.
+- No AI API keys, no cloud AI SDK calls, no runtime inference, and no paid AI dependencies.
+
+============================================================
+9. REQUIRED QA — YOU MUST VERIFY THE REAL RUNNING RESULT
+============================================================
+
+Follow AGENTS.md exactly. At minimum:
+
+A. Source/build gates
+- npm run typecheck;
+- npm run test;
+- npm run lint;
+- npm run build.
+
+Fix all project-caused failures. Do not suppress errors or delete tests. If a platform-owned test is demonstrably inconsistent with the platform contract, explain it precisely and leave the relevant regression protected. Do not silently change expected behavior just to obtain a green result.
+
+B. Runtime / preview
+- Start the app via the required startup.sh flow.
+- Confirm the dev server is running on the platform-required interface/port.
+- Run scripts/browser-smoke.mjs.
+- Inspect both desktop and mobile screenshots visually, not just the JSON output.
+- Confirm visible content, correct spacing, no clipped layout, no blank canvas, no uncaught console/page errors.
+- Test the built production preview using the AGENTS.md process and compare it against the dev baseline.
+- Leave the working preview server running.
+
+C. Interaction checks
+Use the workspace's prescribed agent-browser flow for interactive UI. Test:
+- address field focus and search/URL submit;
+- navigate to a known supported iframe test site;
+- a restricted site fallback (do not claim embedded success);
+- back / forward / reload / home / close / external open;
+- gesture on/off;
+- calibration and sensitivity controls;
+- simulator gestures for all four directions;
+- neutral re-arm and hold/cooldown behavior;
+- comments panel open/close/scroll in Motion Lab;
+- touch-only fallback;
+- WebGL failure / 2D fallback;
+- reduced motion and mute controls.
+
+D. Sensor tests
+- Desktop simulator tests are not real device tests.
+- If the preview tool has access to an actual mobile device with motion sensors, perform a real test and record the model/browser/OS.
+- If no physical phone is available, say “physical-device sensor test not performed”. Do not turn a simulated test into a claim of real-world phone operation.
+
+E. Asset tests
+- verify every manifest file exists and hash/byte size matches;
+- inspect GLB loading in the actual Three.js app;
+- check portal core alignment and clipping;
+- check all textures and shader compilation;
+- confirm lower-performance profile;
+- confirm no-3D fallback.
+
+============================================================
+10. EXECUTION ORDER — FOLLOW IT, BUT KEEP WORKING
+============================================================
+
+1. Read the project instructions and inspect the active workspace.
+2. Confirm the missing route/scaffold files and establish a working app shell.
+3. Fix pulseStart, portal transform/placement, URL hash handling, and security defects.
+4. Mount and visually refine the existing 3D observatory.
+5. Build the working address/search UI and honest site embedding/fallback behavior.
+6. Build the Motion Lab demo feed and comments panel.
+7. Integrate real device-orientation sensor events and calibration.
+8. Connect gesture recognition to actual first-party Motion Lab actions.
+9. Add audio/haptic/animation/accessibility controls.
+10. Add asset validation and fix the PWA metadata test failures properly.
+11. Run build, typecheck, tests, lint, browser smoke, interaction tests, and visual review.
+12. Write NATIVE_ANDROID_IMPLEMENTATION.md and a final test report.
+
+Do not spend the entire run on a decorative 3D environment while leaving the app shell or browser input absent. The product must be a working end-to-end vertical slice, not a collection of attractive assets and disconnected helper functions.
+
+============================================================
+11. ACCEPTANCE CRITERIA — WHAT “DONE” MEANS FOR THIS MILESTONE
+============================================================
+
+The web prototype is only accepted when all applicable items below are genuinely implemented and verified:
+
+[ ] App opens to a real MOTION BROWSER screen, not an empty canvas.
+[ ] 3D environment is mounted in the app and renders in the browser preview.
+[ ] The portal and browser frame are aligned and do not hide the website viewport.
+[ ] A working address/search field accepts site names, domains, full URLs, and search phrases.
+[ ] A real embedded page loads for a site verified to permit embedding.
+[ ] Restricted sites show an honest warning and a functional external-open fallback.
+[ ] No fake Instagram/YouTube feed, screenshot, or fake login is used.
+[ ] Browser shell controls that are shown actually work.
+[ ] Motion Lab is clearly labelled as first-party demo content, not a social network clone.
+[ ] A real browser sensor adapter receives device orientation when permitted and available.
+[ ] Calibration captures a neutral baseline and has a reset path.
+[ ] Motion gestures control the Motion Lab demo feed/comments panel exactly as specified.
+[ ] Gestures do not fire while typing, disabled, backgrounded, or blocked by an overlay.
+[ ] Touch controls continue to work when motion sensing is unavailable or disabled.
+[ ] Reduced Motion, mute, haptics, and sensitivity settings are connected to actual state.
+[ ] Asset manifest integrity validation passes.
+[ ] The app builds, typechecks, lints, and tests without project-caused errors.
+[ ] Dev and production preview render checks pass on desktop and mobile.
+[ ] No unsupported Android APK claim is made.
+[ ] Native Android migration path is documented with limitations.
+
+============================================================
+12. FINAL REPORT FORMAT — DO NOT HIDE WHAT IS UNFINISHED
+============================================================
+
+At the end, provide a concise Uzbek report with these exact sections:
+
+1. “Nima tayyor bo‘ldi” — only genuinely completed features.
+2. “Tekshiruv natijalari” — exact build/typecheck/test/lint/browser-smoke outcomes and counts.
+3. “Haqiqiy ishlash holati” — which websites were tested, which embedded successfully, which required external opening, and whether real phone sensors were tested.
+4. “Hali bajarilmagan ishlar” — remaining work, clearly separated into PWA prototype gaps and native Android work.
+5. “Fayllar va o‘zgarishlar” — the important files/components changed and the actual assets integrated.
+6. “Android bo‘yicha haqiqat” — explicitly state whether a real Android project/APK exists. Never call a web preview an APK.
+7. “Keyingi eng muhim bosqich” — one prioritized next step.
+
+Include exact evidence where available: test counts, screenshots produced, browser/device model, build artifact path, and commit id if the workspace has Git. Do not invent a commit id or a test result.
+
+============================================================
+13. THE WORKING RULE
+============================================================
+
+Preserve what is valid. Repair what is broken. Build what is missing. Test what you claim.
+
+Do not respond with another plan and stop. Do not create a shallow landing page and call it complete. Do not discard the existing assets or logic. Do not fake cross-origin gesture control. Do not confuse a PWA with a native Android browser.
+
+Start by inspecting the active workspace and the supplied ZIP, then IMPLEMENT THE PRODUCT VERTICAL SLICE NOW.

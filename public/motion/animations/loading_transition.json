@@ -1,0 +1,7 @@
+{
+  "name": "loading_transition",
+  "durationMs": 240,
+  "reducedMs": 120,
+  "easing": "linear",
+  "property": "opacity"
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 64">
+  <circle cx="32" cy="32" r="18" fill="none" stroke="#54D9F2" stroke-width="2.2"/>
+  <rect x="25" y="16" width="14" height="32" rx="2.5" fill="#101827" stroke="#F3F6FC" stroke-width="1.4"/>
+  <rect x="25" y="16" width="14" height="6" fill="#54D9F2"/>
+  <text x="64" y="42" fill="#F3F6FC" font-family="Outfit, sans-serif" font-size="28" letter-spacing="3">MOTION BROWSER</text>
+</svg>

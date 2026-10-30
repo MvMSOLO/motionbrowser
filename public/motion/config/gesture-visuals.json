@@ -1,0 +1,26 @@
+{
+  "labels": {
+    "ready": "Ready",
+    "calibrating": "Calibrating",
+    "paused": "Paused",
+    "unavailable": "Gesture unavailable"
+  },
+  "directions": {
+    "up": {
+      "label": "Next",
+      "hint": "Tilt the top of the phone away from you"
+    },
+    "down": {
+      "label": "Previous",
+      "hint": "Tilt the top of the phone toward you"
+    },
+    "left": {
+      "label": "Notes",
+      "hint": "Tilt left"
+    },
+    "right": {
+      "label": "Close notes",
+      "hint": "Tilt right"
+    }
+  }
+}

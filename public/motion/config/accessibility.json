@@ -1,0 +1,13 @@
+{
+  "minTouchTargetPx": 44,
+  "motionOptional": true,
+  "touchAlternative": true,
+  "reducedMotion": "Crossfade only. Scene idle rotation and particles stop.",
+  "contrast": "High-contrast token override. State is never color-only.",
+  "textScale": [
+    "sm",
+    "md",
+    "lg"
+  ],
+  "sensorCopy": "Hold the phone comfortably. Calibration does not ask for extreme wrist angles."
+}

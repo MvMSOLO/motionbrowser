@@ -1,0 +1,7 @@
+{
+  "name": "panel_close",
+  "durationMs": 180,
+  "reducedMs": 100,
+  "easing": "cubic-bezier(0.4, 0, 1, 1)",
+  "property": "translateX"
+}

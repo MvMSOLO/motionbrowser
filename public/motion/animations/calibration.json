@@ -1,0 +1,20 @@
+{
+  "name": "calibration",
+  "durationMs": 0,
+  "reducedMs": 0,
+  "pacing": "user",
+  "steps": [
+    {
+      "id": "hold",
+      "copy": "Hold the phone the way you actually browse. You should not strain your wrist."
+    },
+    {
+      "id": "still",
+      "copy": "Keep it still for a moment, then capture that pose as neutral."
+    },
+    {
+      "id": "test",
+      "copy": "Tilt gently up, down, left, and right. Return near neutral between each one."
+    }
+  ]
+}

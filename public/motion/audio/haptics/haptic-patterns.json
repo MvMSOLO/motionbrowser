@@ -1,0 +1,14 @@
+{
+  "confirm": [
+    12
+  ],
+  "error": [
+    18,
+    36,
+    18
+  ],
+  "panel": [
+    8
+  ],
+  "note": "Patterns are millisecond pulses for the Vibration API. Nothing vibrates continuously."
+}

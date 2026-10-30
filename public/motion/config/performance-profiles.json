@@ -1,0 +1,38 @@
+{
+  "high": {
+    "renderScaleCap": 1.75,
+    "shadows": "off",
+    "particles": 64,
+    "postProcessing": false,
+    "textureTier": "standard",
+    "modelTier": "standard",
+    "targetFramePolicy": "follow display, do not promise above 60 without measurement"
+  },
+  "balanced": {
+    "renderScaleCap": 1.35,
+    "shadows": "off",
+    "particles": 28,
+    "postProcessing": false,
+    "textureTier": "standard",
+    "modelTier": "standard",
+    "targetFramePolicy": "stable 60 where the device allows"
+  },
+  "low": {
+    "renderScaleCap": 1,
+    "shadows": "off",
+    "particles": 0,
+    "postProcessing": false,
+    "textureTier": "standard",
+    "modelTier": "low",
+    "targetFramePolicy": "keep the page responsive; drop decoration first"
+  },
+  "fallback2d": {
+    "renderScaleCap": 0,
+    "shadows": "off",
+    "particles": 0,
+    "postProcessing": false,
+    "textureTier": "ui-only",
+    "modelTier": "none",
+    "targetFramePolicy": "no WebGL"
+  }
+}

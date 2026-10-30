@@ -1,0 +1,7 @@
+{
+  "name": "gesture_feedback",
+  "durationMs": 420,
+  "reducedMs": 160,
+  "easing": "linear",
+  "property": "opacity"
+}
