@@ -10,6 +10,7 @@ import { profileForTarget } from "./site-profiles.ts";
 import { classifySensor } from "./sensor-capability.ts";
 import { buildSwipeSequence, denormalize, feedPageDelta, swipeScrollDelta } from "./swipe-sequence.ts";
 import { isBlockedHost, resolveAddress } from "./url-resolver.ts";
+import { DEFAULT_MOTION_PREFS, parseMotionPrefs } from "./preferences.ts";
 
 const config = configForSensitivity("medium");
 
@@ -31,6 +32,50 @@ const active: MotionContext = {
   profileSupportsFeed: true,
   profileSupportsComments: true,
 };
+
+
+describe("motion preferences", () => {
+  it("uses defaults for missing or malformed storage", () => {
+    assert.deepEqual(parseMotionPrefs(null), DEFAULT_MOTION_PREFS);
+    assert.deepEqual(parseMotionPrefs("{not-json"), DEFAULT_MOTION_PREFS);
+    assert.deepEqual(parseMotionPrefs("null"), DEFAULT_MOTION_PREFS);
+  });
+
+  it("keeps valid values and ignores invalid persisted values", () => {
+    assert.deepEqual(
+      parseMotionPrefs(JSON.stringify({
+        sensitivity: "high",
+        sound: true,
+        haptics: false,
+        ambience: true,
+        reducedMotion: true,
+        profile: "low",
+        force2d: true,
+        onboarded: true,
+        injected: "ignored",
+      })),
+      {
+        ...DEFAULT_MOTION_PREFS,
+        sensitivity: "high",
+        sound: true,
+        ambience: true,
+        reducedMotion: true,
+        profile: "low",
+        force2d: true,
+        onboarded: true,
+      },
+    );
+    assert.deepEqual(
+      parseMotionPrefs(JSON.stringify({
+        sensitivity: "ultra",
+        sound: "false",
+        profile: "cinematic",
+        force2d: 1,
+      })),
+      DEFAULT_MOTION_PREFS,
+    );
+  });
+});
 
 describe("resolveAddress", () => {
   it("maps known site names and bare domains to https", () => {
@@ -68,6 +113,8 @@ describe("resolveAddress", () => {
     assert.equal(isBlockedHost("224.0.0.1"), true);
     assert.equal(isBlockedHost("240.0.0.1"), true);
     assert.equal(isBlockedHost("0177.0.0.1"), true);
+    assert.equal(isBlockedHost("127.1"), true);
+    assert.equal(isBlockedHost("1234.0.0.1"), true);
     assert.equal(isBlockedHost("2130706433"), true);
     assert.equal(isBlockedHost("0x7f.0x0.0x0.0x1"), true);
     assert.equal(isBlockedHost("::1"), true);

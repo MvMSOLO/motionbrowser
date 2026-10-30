@@ -71,7 +71,10 @@ function parseDottedIpv4(host: string): [number, number, number, number] | "bloc
       : [parts[0], parts[1], parts[2], parts[3]];
   }
   const match = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/.exec(host);
-  if (!match) return null;
+  // WHATWG URL parsing accepts legacy numeric IPv4 forms such as 127.1 and
+  // 0177.0.0.1. Reject malformed numeric dotted hosts instead of treating
+  // them as ordinary public DNS names.
+  if (!match) return /^\d+(?:\.\d+){0,3}$/.test(host) ? "blocked" : null;
   if (match.slice(1).some((part) => part.length > 1 && part.startsWith("0"))) return "blocked";
   const parts = match.slice(1).map((part) => Number(part)) as [number, number, number, number];
   if (blockedIpv4Parts(parts[0], parts[1], parts[2], parts[3])) return "blocked";
