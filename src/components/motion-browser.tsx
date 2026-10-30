@@ -171,7 +171,7 @@ export function MotionBrowser() {
     setQuery(entry?.t === "web" ? entry.url : entry?.t === "search" ? entry.query : "");
     setFrameState(entry?.t === "web" && entry.plan.kind !== "restricted" ? "loading" : "idle");
     playCue(delta < 0 ? "back" : "confirm");
-  }, [playCue, stack.length]);
+  }, [playCue, stack]);
 
   const openResolved = useCallback(async (result: ResolveResult) => {
     if (result.kind === "error") {
