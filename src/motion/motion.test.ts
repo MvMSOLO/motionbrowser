@@ -113,6 +113,8 @@ describe("resolveAddress", () => {
     assert.equal(isBlockedHost("224.0.0.1"), true);
     assert.equal(isBlockedHost("240.0.0.1"), true);
     assert.equal(isBlockedHost("0177.0.0.1"), true);
+    assert.equal(isBlockedHost("127.1"), true);
+    assert.equal(isBlockedHost("1234.0.0.1"), true);
     assert.equal(isBlockedHost("2130706433"), true);
     assert.equal(isBlockedHost("0x7f.0x0.0x0.0x1"), true);
     assert.equal(isBlockedHost("::1"), true);
