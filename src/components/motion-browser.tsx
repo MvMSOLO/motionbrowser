@@ -10,9 +10,11 @@ import type { SearchHit } from "@/motion/search-parse";
 import { resolveAddress, type ResolveResult } from "@/motion/url-resolver";
 import type { ModelTier, SceneMode } from "@/motion/observatory";
 import { ObservatoryStage } from "@/components/observatory-stage";
+import { DEFAULT_MOTION_PREFS, MOTION_PREF_KEY, parseMotionPrefs, type MotionPrefs } from "@/motion/preferences";
 
 type MotionMode = "off" | "phone" | "simulator";
 type Profile = ModelTier;
+type Prefs = MotionPrefs;
 
 type Hist =
   | { t: "home" }
@@ -20,40 +22,10 @@ type Hist =
   | { t: "search"; query: string }
   | { t: "web"; url: string; display: string; plan: EmbedPlan };
 
-type Prefs = {
-  sensitivity: Sensitivity;
-  sound: boolean;
-  haptics: boolean;
-  ambience: boolean;
-  reducedMotion: boolean;
-  profile: Profile;
-  force2d: boolean;
-  onboarded: boolean;
-};
-
-const PREF_KEY = "motion-browser-prefs-v1";
-const DEFAULT_PREFS: Prefs = {
-  sensitivity: "medium",
-  sound: false,
-  haptics: false,
-  ambience: false,
-  reducedMotion: false,
-  profile: "balanced",
-  force2d: false,
-  onboarded: false,
-};
-
 const HAPTIC_FALLBACK: Record<string, number[]> = { confirm: [12], error: [18, 36, 18], panel: [8] };
 
 function loadPrefs(): Prefs {
-  try {
-    const raw = localStorage.getItem(PREF_KEY);
-    if (!raw) return DEFAULT_PREFS;
-    const parsed = JSON.parse(raw) as Partial<Prefs>;
-    return { ...DEFAULT_PREFS, ...parsed, sound: Boolean(parsed.sound), haptics: Boolean(parsed.haptics), ambience: Boolean(parsed.ambience) };
-  } catch {
-    return DEFAULT_PREFS;
-  }
+  return parseMotionPrefs(localStorage.getItem(MOTION_PREF_KEY));
 }
 
 function Icon({ name, alt }: { name: string; alt: string }) {
@@ -61,7 +33,7 @@ function Icon({ name, alt }: { name: string; alt: string }) {
 }
 
 export function MotionBrowser() {
-  const [prefs, setPrefs] = useState<Prefs>(DEFAULT_PREFS);
+  const [prefs, setPrefs] = useState<Prefs>(DEFAULT_MOTION_PREFS);
   const [ready, setReady] = useState(false);
   const [motionMode, setMotionMode] = useState<MotionMode>("off");
   const [calibrated, setCalibrated] = useState(false);
@@ -86,6 +58,7 @@ export function MotionBrowser() {
   const [panelMs, setPanelMs] = useState(220);
 
   const cursorRef = useRef(0);
+  const searchRequestRef = useRef(0);
   const simRef = useRef({ pitch: 0, roll: 0 });
   const phoneRef = useRef({ pitch: 0, roll: 0, has: false });
   const neutralRef = useRef<{ pitch: number; roll: number } | null>(null);
@@ -114,7 +87,7 @@ export function MotionBrowser() {
 
   useEffect(() => {
     if (!ready) return;
-    localStorage.setItem(PREF_KEY, JSON.stringify(prefs));
+    localStorage.setItem(MOTION_PREF_KEY, JSON.stringify(prefs));
   }, [prefs, ready]);
 
   useEffect(() => {
@@ -174,6 +147,10 @@ export function MotionBrowser() {
   }, [prefs.ambience, prefs.sound, reduced, visible]);
 
   const push = useCallback((entry: Hist) => {
+    // Any navigation invalidates an in-flight search so stale results cannot
+    // overwrite the page the user has moved to.
+    searchRequestRef.current += 1;
+    setSearching(false);
     setStack((prev) => {
       const next = [...prev.slice(0, cursorRef.current + 1), entry];
       cursorRef.current = next.length - 1;
@@ -186,6 +163,8 @@ export function MotionBrowser() {
   const go = useCallback((delta: number) => {
     const next = Math.min(stack.length - 1, Math.max(0, cursorRef.current + delta));
     if (next === cursorRef.current) return;
+    searchRequestRef.current += 1;
+    setSearching(false);
     cursorRef.current = next;
     setCursor(next);
     playCue(delta < 0 ? "back" : "confirm");
@@ -205,18 +184,22 @@ export function MotionBrowser() {
       return;
     }
     if (result.kind === "search") {
-      setSearching(true);
       setSearchError(null);
       setHits([]);
       push({ t: "search", query: result.query });
+      const requestId = searchRequestRef.current;
+      setSearching(true);
       try {
         const found = await searchWeb({ data: { query: result.query } });
+        if (requestId !== searchRequestRef.current) return;
         setHits(found.hits);
         setSearchError(found.hits.length ? null : found.error ?? "Hech narsa topilmadi.");
       } catch {
-        setSearchError("Qidiruvni ochib bo‘lmadi. Tashqarida urinib ko‘ring.");
+        if (requestId === searchRequestRef.current) {
+          setSearchError("Qidiruvni ochib bo‘lmadi. Tashqarida urinib ko‘ring.");
+        }
       } finally {
-        setSearching(false);
+        if (requestId === searchRequestRef.current) setSearching(false);
       }
       return;
     }
