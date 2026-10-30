@@ -27,18 +27,6 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Generate the missing Three.js declaration dependency lock
-        run: npm install --package-lock-only --ignore-scripts --save-dev @types/three@0.186.0
-
-      - name: Save generated dependency manifests
-        uses: actions/upload-artifact@v4
-        with:
-          name: three-types-lock
-          path: |
-            package.json
-            package-lock.json
-          if-no-files-found: error
-
       - name: Install dependencies
         run: npm ci
 
@@ -47,6 +35,9 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: Lint
+        run: npm run lint
 
       - name: Build production bundle
         run: npm run build
