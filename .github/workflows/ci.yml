@@ -6,7 +6,7 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -38,6 +40,16 @@ jobs:
             package.json
             package-lock.json
           if-no-files-found: error
+
+      - name: Commit generated Three.js typings lock
+        run: |
+          if ! git diff --quiet -- package.json package-lock.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package.json package-lock.json
+            git commit -m "build: add Three.js type declarations"
+            git push origin "HEAD:${{ github.head_ref || github.ref_name }}"
+          fi
 
       - name: Install dependencies
         run: npm ci
