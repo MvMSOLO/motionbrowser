@@ -27,6 +27,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -35,6 +36,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import kotlin.math.roundToInt
 
 private const val COLOR_BG = 0xFF070A12.toInt()
@@ -134,6 +138,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         window.statusBarColor = COLOR_BG
         window.navigationBarColor = COLOR_BG
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
@@ -165,19 +170,30 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             setPadding(dp(14), dp(10), dp(14), dp(10))
             setBackgroundColor(COLOR_BG)
         }
+        val rootPadding = intArrayOf(dp(14), dp(10), dp(14), dp(10))
+        ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
+            val bars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
+            )
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
+            view.setPadding(
+                rootPadding[0] + bars.left,
+                rootPadding[1] + bars.top,
+                rootPadding[2] + bars.right,
+                rootPadding[3] + maxOf(bars.bottom, ime.bottom)
+            )
+            insets
+        }
 
         val header = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
             setPadding(0, dp(2), 0, dp(8))
         }
-        val mark = TextView(this).apply {
-            text = "M"
-            textSize = 18f
-            setTextColor(COLOR_BG)
-            gravity = Gravity.CENTER
-            typeface = Typeface.create("sans-serif", Typeface.BOLD)
-            background = rounded(COLOR_ACCENT, COLOR_ACCENT, 14)
+        val mark = ImageView(this).apply {
+            setImageResource(R.drawable.motion_browser_mark)
+            contentDescription = null
+            scaleType = ImageView.ScaleType.FIT_CENTER
             layoutParams = LinearLayout.LayoutParams(dp(42), dp(42)).apply { rightMargin = dp(10) }
         }
         val brand = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
@@ -277,6 +293,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         }
         root.addView(footer)
         setContentView(root)
+        ViewCompat.requestApplyInsets(root)
     }
 
     private fun buildHomePanel(): LinearLayout {
