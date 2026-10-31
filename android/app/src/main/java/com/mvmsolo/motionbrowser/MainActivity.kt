@@ -2,6 +2,7 @@ package com.mvmsolo.motionbrowser
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
@@ -215,7 +216,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             setHintTextColor(COLOR_MUTED)
             setTextColor(COLOR_FG)
             textSize = 15f
-            singleLine = true
+            isSingleLine = true
             inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_URI
             imeOptions = EditorInfo.IME_ACTION_GO
             background = null
@@ -396,7 +397,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun configureWebView() {
-        WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
+        val isDebuggable = applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
+        WebView.setWebContentsDebuggingEnabled(isDebuggable)
         webView.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
