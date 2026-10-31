@@ -25,9 +25,8 @@ class AddressResolverTest {
             AddressResult.Navigate("https://example.com/docs?q=1#top"),
             AddressResolver.resolve("http://example.com/docs?q=1#top")
         )
-        val search = AddressResolver.resolve("quiet observatories")
-        assertTrue(search is AddressResult.Search)
-        assertEquals("quiet observatories", (search as AddressResult.Search).query)
+        val search = AddressResolver.resolve("quiet observatories") as AddressResult.Search
+        assertEquals("quiet observatories", search.query)
         assertTrue(search.url.startsWith("https://duckduckgo.com/?q="))
     }
 
@@ -41,8 +40,15 @@ class AddressResolverTest {
             "intent://scan/#Intent;end",
             "https://user:pass@example.com",
             "https://127.0.0.1",
+            "https://127.1",
+            "https://0177.0.0.1",
+            "https://2130706433",
+            "https://0x7f.0x0.0x0.0x1",
+            "https://10.0.0.1",
             "https://192.168.1.10",
-            "https://localhost"
+            "https://169.254.1.2",
+            "https://localhost",
+            "https://printer.local"
         ).forEach { value ->
             assertTrue("$value should be rejected", AddressResolver.resolve(value) is AddressResult.Error)
         }
